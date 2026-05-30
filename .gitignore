@@ -1,0 +1,75 @@
+# Virtual Environment
+venv/
+.env/
+.venv/
+
+# Python Cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Environment Variables
+.env
+.env.*
+
+# Logs
+logs/
+*.log
+
+# Artifacts
+artifacts/
+artifacts/faiss_index/
+artifacts/logs/
+artifacts/metrics/
+artifacts/responses/
+
+# Model Files
+models/
+*.gguf
+*.bin
+*.safetensors
+*.pth
+*.pt
+
+# Hugging Face Cache
+.cache/
+huggingface/
+hf_cache/
+
+# FAISS Index
+*.faiss
+*.pkl
+*.index
+
+# Jupyter
+.ipynb_checkpoints/
+
+# VS Code
+.vscode/
+
+# PyCharm
+.idea/
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Build Files
+build/
+dist/
+*.egg-info/
+
+# Uploaded Documents
+data/raw/
+
+# Temporary Files
+temp/
+tmp/
+*.tmp
+
+# Evaluation Outputs
+evaluation_results/
