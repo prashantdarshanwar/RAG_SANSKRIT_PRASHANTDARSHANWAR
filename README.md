@@ -198,7 +198,7 @@ RAG_Sanskrit_SanketMaraskolhe/
 
 ```bash
 git clone <repository_url>
-cd RAG_Sanskrit_SanketMaraskolhe
+cd RAG_Sanskrit_NAME
 ```
 
 ### Create Virtual Environment
