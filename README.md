@@ -1,172 +1,216 @@
 # 🕉 Sanskrit RAG System
 
-A CPU-optimized Retrieval-Augmented Generation (RAG) system designed for Sanskrit document understanding and question answering. The system combines semantic search (FAISS), keyword retrieval (BM25), and lightweight Large Language Models (TinyLlama) to generate context-aware responses from Sanskrit knowledge sources.
+A CPU-Optimized Hybrid Retrieval-Augmented Generation (RAG) Framework for Sanskrit Document Understanding and Context-Aware Question Answering.
+
+![Python](https://img.shields.io/badge/Python-3.10+-blue)
+![FAISS](https://img.shields.io/badge/FAISS-Vector_Search-green)
+![BM25](https://img.shields.io/badge/BM25-Keyword_Retrieval-orange)
+![TinyLlama](https://img.shields.io/badge/TinyLlama-CPU_Inference-red)
+![Streamlit](https://img.shields.io/badge/Streamlit-Web_App-ff4b4b)
 
 ---
 
-## 📌 Overview
+# 📌 Overview
 
-This project implements an end-to-end RAG pipeline capable of:
+The Sanskrit RAG System is a Retrieval-Augmented Generation (RAG) framework designed specifically for Sanskrit documents. The system combines semantic search, keyword retrieval, and lightweight Large Language Models to generate accurate, context-aware answers from Sanskrit knowledge sources.
 
-* Processing Sanskrit documents from multiple formats
-* Performing intelligent semantic retrieval
-* Supporting exact keyword matching
-* Generating contextual answers using a lightweight LLM
-* Running completely on CPU without GPU requirements
+Unlike traditional LLM applications, this system is optimized to run entirely on CPU hardware, making it lightweight, portable, and cost-efficient.
 
-The architecture is designed specifically to address challenges in Sanskrit text processing such as Devanagari script handling, Sandhi-based compound words, and domain-specific terminology.
+The architecture addresses key Sanskrit language challenges such as:
+
+* Devanagari script processing
+* Sandhi-based compound words
+* Sanskrit-specific punctuation handling
+* Domain-specific terminology retrieval
+* Context preservation across shlokas and verses
 
 ---
 
-## 🚀 Key Features
+# 🚀 Key Features
 
-### Document Processing
+## 📄 Document Processing
 
 * PDF Support
 * TXT Support
 * DOCX Support
 * CSV Support
 * PPTX Support
+* Automatic Text Extraction
+* Unicode Normalization
 
-### Retrieval System
+## 🔍 Hybrid Retrieval
 
-* FAISS Vector Search
+* FAISS Semantic Search
 * BM25 Keyword Search
-* Hybrid Retrieval Strategy
 * Reciprocal Rank Fusion (RRF)
+* Context Ranking
+* Top-K Retrieval
 
-### Language Processing
+## 🧠 Sanskrit Processing
 
 * Sanskrit Text Cleaning
-* Unicode Normalization
-* Transliteration Support
+* Devanagari Support
+* Transliteration Pipeline
 * Sandhi-Aware Chunking
+* Shloka Preservation
 
-### Generation Layer
+## 🤖 Generation Layer
 
-* TinyLlama Inference
-* CPU-Only Execution
+* TinyLlama Integration
 * Quantized GGUF Models
+* CPU-Only Inference
 * Low Memory Footprint
+* Context-Aware Response Generation
 
-### User Interface
+## 🌐 User Interface
 
 * Streamlit Dashboard
-* Interactive Query Interface
-* Retrieval Monitoring
-* Response Tracking
+* Interactive Querying
+* Retrieval Visualization
+* Response Monitoring
 
 ---
 
 # 🏗 System Architecture
 
 ```text
-Raw Documents
-(PDF/TXT/DOCX/CSV/PPTX)
-          │
-          ▼
-Document Loader
-          │
-          ▼
-Text Cleaning & Normalization
-          │
-          ▼
-Transliteration Layer
-          │
-          ▼
-Chunk Generation
-          │
- ┌────────┴─────────┐
- ▼                  ▼
-FAISS           BM25
-(Dense)        (Sparse)
- │                │
- └──────┬─────────┘
-        ▼
-Hybrid Retriever
-(RRF Fusion)
-        │
-        ▼
-Prompt Builder
-        │
-        ▼
-TinyLlama
-        │
-        ▼
-Generated Answer
+                     Sanskrit RAG Pipeline
+
+┌────────────────────────────────────────────────────┐
+│                RAW DOCUMENTS                        │
+│        PDF | TXT | DOCX | CSV | PPTX               │
+└────────────────────────────────────────────────────┘
+                        │
+                        ▼
+┌────────────────────────────────────────────────────┐
+│              DOCUMENT LOADER                       │
+└────────────────────────────────────────────────────┘
+                        │
+                        ▼
+┌────────────────────────────────────────────────────┐
+│       TEXT CLEANING & NORMALIZATION                │
+└────────────────────────────────────────────────────┘
+                        │
+                        ▼
+┌────────────────────────────────────────────────────┐
+│             TRANSLITERATION LAYER                  │
+│          (Devanagari → IAST)                       │
+└────────────────────────────────────────────────────┘
+                        │
+                        ▼
+┌────────────────────────────────────────────────────┐
+│                CHUNK GENERATION                    │
+└────────────────────────────────────────────────────┘
+                        │
+          ┌─────────────┴─────────────┐
+          ▼                           ▼
+
+┌────────────────┐         ┌────────────────┐
+│     FAISS      │         │      BM25      │
+│ Dense Retrieval│         │Sparse Retrieval│
+└────────────────┘         └────────────────┘
+          │                           │
+          └─────────────┬─────────────┘
+                        ▼
+
+┌────────────────────────────────────────────────────┐
+│     HYBRID RETRIEVAL (RRF FUSION)                  │
+└────────────────────────────────────────────────────┘
+                        │
+                        ▼
+
+┌────────────────────────────────────────────────────┐
+│              PROMPT ENGINEERING                    │
+└────────────────────────────────────────────────────┘
+                        │
+                        ▼
+
+┌────────────────────────────────────────────────────┐
+│             TINYLLAMA (CPU INFERENCE)              │
+└────────────────────────────────────────────────────┘
+                        │
+                        ▼
+
+┌────────────────────────────────────────────────────┐
+│               GENERATED ANSWER                     │
+└────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 🔍 Retrieval Pipeline
+# 🔄 Working Flow
 
-### Dense Retrieval (FAISS)
+### Step 1: Document Ingestion
 
-Text chunks are converted into embeddings using Sentence Transformers and stored inside a FAISS vector index.
+Documents are uploaded into the system.
 
-Benefits:
+Supported formats:
 
-* Semantic similarity matching
-* Context-aware retrieval
-* Fast vector search
+* PDF
+* TXT
+* DOCX
+* CSV
+* PPTX
 
-### Sparse Retrieval (BM25)
+### Step 2: Text Processing
 
-BM25 performs lexical matching to capture exact Sanskrit terminology and important keywords.
+The extracted Sanskrit text undergoes:
 
-Benefits:
+* Unicode normalization
+* Character cleaning
+* Metadata removal
+* Sanskrit punctuation preservation
 
-* Precise keyword matching
-* Improved recall
-* Better handling of rare terms
+### Step 3: Transliteration
 
-### Hybrid Retrieval
-
-Results from FAISS and BM25 are combined using Reciprocal Rank Fusion (RRF):
-
-Score(d) = 1/(k + Rank_FAISS) + 1/(k + Rank_BM25)
-
-where:
-
-k = 60
-
-This balances semantic relevance and keyword relevance.
-
----
-
-## 🧠 Sanskrit-Specific Optimizations
-
-### Unicode Normalization
-
-Normalizes Sanskrit Unicode representations for consistent retrieval.
-
-### Sandhi-Aware Chunking
-
-Instead of splitting purely by character count, chunk boundaries consider:
-
-* Danda (|)
-* Double Danda (||)
-* Paragraph Breaks
-* Semantic Boundaries
-
-This preserves the meaning of shlokas and verses.
-
-### Transliteration Layer
-
-Documents can be processed in:
+The text is transformed into alternate representations:
 
 * Devanagari
 * IAST
-* SLP1 (optional)
+* Optional SLP1
 
-This improves retrieval accuracy and embedding quality.
+This improves retrieval accuracy.
+
+### Step 4: Chunking
+
+Documents are divided into meaningful chunks while preserving:
+
+* Shlokas
+* Danda boundaries (|)
+* Double Danda boundaries (||)
+
+### Step 5: Index Creation
+
+Two retrieval systems are built:
+
+#### Dense Retrieval
+
+* Sentence Transformer Embeddings
+* FAISS Vector Index
+
+#### Sparse Retrieval
+
+* BM25 Index
+* Exact Keyword Matching
+
+### Step 6: Hybrid Retrieval
+
+FAISS and BM25 results are merged using Reciprocal Rank Fusion (RRF).
+
+### Step 7: Prompt Construction
+
+Retrieved context is combined with the user query.
+
+### Step 8: Response Generation
+
+TinyLlama generates a context-aware answer using the retrieved Sanskrit knowledge.
 
 ---
 
-## 📂 Project Structure
+# 📂 Project Structure
 
 ```text
-RAG_Sanskrit_SanketMaraskolhe/
+Sanskrit-RAG-System/
 
 ├── artifacts/
 │   ├── faiss_index/
@@ -187,37 +231,43 @@ RAG_Sanskrit_SanketMaraskolhe/
 ├── data/
 │   └── raw/
 
+├── assets/
+│   └── workflow_diagram.png
+
 └── README.md
 ```
 
 ---
 
-## ⚙️ Installation
+# ⚙️ Installation
 
-### Clone Repository
+## Clone Repository
 
 ```bash
-git clone <repository_url>
-cd RAG_Sanskrit_NAME
+git clone https://github.com/prashantdarshanwar/RAG_SANSKRIT_PRASHANTDARSHANWAR
+
+cd Sanskrit-RAG-System
 ```
 
-### Create Virtual Environment
+## Create Virtual Environment
 
-Windows
+### Windows
 
 ```bash
 python -m venv venv
+
 venv\Scripts\activate
 ```
 
-Linux / macOS
+### Linux / macOS
 
 ```bash
 python3 -m venv venv
+
 source venv/bin/activate
 ```
 
-### Install Dependencies
+## Install Dependencies
 
 ```bash
 pip install -r code/requirements.txt
@@ -225,9 +275,9 @@ pip install -r code/requirements.txt
 
 ---
 
-## 📥 Add Documents
+# 📥 Add Sanskrit Documents
 
-Place Sanskrit files inside:
+Place files inside:
 
 ```text
 data/raw/
@@ -243,30 +293,31 @@ Supported formats:
 
 ---
 
-## 🔨 Build Index
+# 🔨 Build Retrieval Index
 
 ```bash
 python -m code.src.pipeline.rag_pipeline
 ```
 
-Artifacts generated:
+Generated artifacts:
 
 ```text
 artifacts/faiss_index/
 artifacts/bm25_index/
 artifacts/logs/
 artifacts/metrics/
+artifacts/responses/
 ```
 
 ---
 
-## 🌐 Launch Application
+# 🌐 Run Streamlit Application
 
 ```bash
 streamlit run code/app.py
 ```
 
-Default URL:
+Open:
 
 ```text
 http://localhost:8501
@@ -274,32 +325,39 @@ http://localhost:8501
 
 ---
 
-## 📊 Performance Characteristics
+# 📊 Retrieval Formula
 
-| Component             | Purpose            |
-| --------------------- | ------------------ |
-| FAISS                 | Semantic Retrieval |
-| BM25                  | Keyword Retrieval  |
-| TinyLlama             | Answer Generation  |
-| Streamlit             | User Interface     |
-| Sentence Transformers | Embedding Creation |
+The system combines FAISS and BM25 rankings using Reciprocal Rank Fusion (RRF):
 
-### CPU Optimization
+Score(d) = 1/(k + Rank_FAISS) + 1/(k + Rank_BM25)
 
-* 4-bit Quantization
-* GGUF Model Format
-* Low RAM Consumption
-* Multi-threaded Inference
-* CPU-Only Deployment
+Where:
+
+* d = Retrieved Chunk
+* k = 60
+
+This balances semantic relevance and keyword relevance.
 
 ---
 
-## 🛠 Tech Stack
+# 📈 Performance Characteristics
+
+| Component             | Purpose             |
+| --------------------- | ------------------- |
+| FAISS                 | Semantic Retrieval  |
+| BM25                  | Keyword Retrieval   |
+| TinyLlama             | Response Generation |
+| Streamlit             | User Interface      |
+| Sentence Transformers | Embedding Creation  |
+
+---
+
+# 🛠 Tech Stack
 
 * Python
 * Streamlit
 * FAISS
-* BM25
+* Rank-BM25
 * TinyLlama
 * Sentence Transformers
 * NumPy
@@ -308,26 +366,28 @@ http://localhost:8501
 
 ---
 
-## 🔮 Future Enhancements
+# 🔮 Future Enhancements
 
 * OCR Support for Sanskrit Manuscripts
-* Hybrid Re-ranking Models
-* Multi-language Retrieval
+* Docker Deployment
+* FastAPI Backend
 * Agentic RAG Workflows
 * Knowledge Graph Integration
-* API Deployment with FastAPI
-* Docker Support
+* Re-ranking Models
+* Multi-Language Support
 
 ---
 
-## 📜 License
+# 📜 License
 
-This project is developed for research, educational, and Sanskrit language understanding purposes.
+This project is intended for educational, research, and Sanskrit language understanding purposes.
 
 ---
 
-## 👨‍💻 Author
+# 👨‍💻 Author
 
-Prashant Ashok Darshanwar
+**Prashant Ashok Darshanwar**
 
 AI/ML Engineer | GenAI Developer | RAG Systems Builder
+
+
